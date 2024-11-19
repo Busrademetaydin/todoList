@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import ToDoInput from './components/ToDoInput';
+import ToDoList from './components/ToDoList';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const [todos, setTodos] = useState([])
+const [todoValue, setTodoValue]= useState('')
+
+function handleAddTodos(newTodo) {
+  const newTodoList=[...todos, newTodo]
+  setTodos(newTodoList)
 }
 
-export default App;
+function handleDeleteTodo(index) {
+  const newTodoList= todos.filter((todo,todoIndex) => {
+    return todoIndex !== index
+  })
+setTodos(newTodoList)
+}
+
+function handleEditTodo(index) {
+  const valueToBeEdited = todos[index]
+  setTodoValue(valueToBeEdited)
+  handleDeleteTodo(index)
+
+}
+  return (
+      <>
+      <ToDoInput todoValue={todoValue} setTodoValue={setTodoValue} 
+      handleAddTodos={handleAddTodos} />
+      <ToDoList handleEditTodo={handleEditTodo}
+       handleDeleteTodo={handleDeleteTodo} todos={todos} />
+      </>
+      
+  )
+}
+
+export default App
